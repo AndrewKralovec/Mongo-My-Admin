@@ -60,20 +60,13 @@ app.post('/collection', function (req, res) {
 
 	var db = new Db(databaseName, new Server('localhost', 27017));
 	db.open(function(err, db) {
-        // Grab a collection without a callback no safe mode
-        // If collection does not exist, create collection 
-        //var col1 = db.collection('DB');
-        //col1.insertOne({"adress":{'street':'603 college','zipcode':'60525'}}); 
-        // Wont create collection until first insert method 
-        // col1('test', function(err, collection) {});
-        // Check if the collection exists 
-        // col1('test', {strict:true}, function(err, collection) {});
 		db.listCollections().toArray(function(err, collections){
 			for(var collection  of collections) {
 			    console.log(collection); 
 			}
 			res.json(collections);
-		})
+			db.close(); 
+		}); 
     });
 }); 
 
@@ -81,15 +74,15 @@ app.post('/collection', function (req, res) {
 app.post('/viewcollection', function (req, res) {
 	console.log("-- recived viewcollection post request --"); 
 	var databaseName = req.body.DB , collection = req.body.contactItem ; 
-	var db = new Db(databaseName, new Server('localhost', 27017));
 
+	var db = new Db(databaseName, new Server('localhost', 27017));
 	db.open(function(err, db) {
 	console.log(databaseName+": opened");
+	// Cursor (pointer is just to C), will run through all
 	var cursor = db.collection(collection).find();
 		var array = [] ; 
 		cursor.each(function(err, doc) {
 			var isempty = false ; 
-			// fix null item errors 
 	    	assert.equal(err, null);
 	    	if (!isempty && doc != null) {
 	         console.log(doc);
@@ -101,10 +94,44 @@ app.post('/viewcollection', function (req, res) {
 	    	//fix race error
 	    	if(isempty){
 				res.json(array); 
+				db.close(); 
 	    	}
 	   }); 
 	}); 
 
+});
+
+
+
+// listen for contactlist get request
+app.post('/dropcollection', function (req, res) {
+	var databaseName = req.body.contactItem ; 
+	console.log('req contackItem: ' + databaseName);
+
+	var db = new Db(databaseName, new Server('localhost', 27017)); 
+	// Establish connection to db
+	db.open(function(err, db) {
+	assert.equal(null, err);
+		// Execute drop db command against the server
+		db.command({dropDatabase: 1}, function(err, result) {
+			assert.equal(null, err);
+	    	db.close();
+		});
+	});
+});
+
+
+// listen for contactlist get request
+app.post('/addcollection', function (req, res) {
+	var databaseName = req.body.contactItem ; 
+	console.log('req contackItem: ' + databaseName);
+
+	var db = new Db(databaseName, new Server('localhost', 27017)); 
+	// Establish connection to db
+	db.open(function(err, db) {
+	assert.equal(null, err);
+
+	});
 });
 
 	

@@ -23,12 +23,30 @@ $scope.editDB = function(contactItem) {
       $scope.DB_NAME = contactItem; 
       $scope.objs = response ; 
       console.log("posted: "+response);
-      });
+    });
   };
 
 $scope.dropDB = function(contactItem) {
-  console.log("Drop: "+contactItem);
-  };
+  console.log("drop : "+contactItem);
+    $http.post('/dropcollection', JSON.stringify({'contactItem': contactItem})).success(function(response) {
+      console.log("DB Deleted: ");
+    });
+    refresh(); 
+};
+
+$scope.addDB = function(contactItem) {
+  console.log("add : "+contactItem);
+  $http.post('/addcollection', JSON.stringify({'contactItem': contactItem})).success(function(response) {
+      console.log("DB Added: ");
+    });
+
+  refresh();
+};
+
+$scope.updateDB = function(contactItem) {
+  console.log("udpate : "+contactItem);
+};
+
 
 $scope.viewCollection = function(contactItem) {
   console.log("View: "+contactItem);
@@ -37,15 +55,21 @@ $scope.viewCollection = function(contactItem) {
    $http.post('/viewcollection',objson).success(function(response) {
       console.log("----- posted: -----");
       console.log("response: "+response);
+      $scope.items = response ; 
       console.log("------------");
-      var array = response ; 
+
+      /* 
       array.forEach(function(entry) {
           console.log(entry);
       });
+      */
 
       });
   };
 
+$scope.dropCollection = function(contactItem) {
+  console.log("drop Collection: "+contactItem);
+};
 
 
 });// Controller 
