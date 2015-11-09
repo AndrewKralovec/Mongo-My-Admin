@@ -104,7 +104,7 @@ app.post('/viewcollection', function (req, res) {
 
 
 // listen for contactlist get request
-app.post('/dropcollection', function (req, res) {
+app.post('/dropDB', function (req, res) {
 	var databaseName = req.body.contactItem ; 
 	console.log('req contackItem: ' + databaseName);
 
@@ -122,15 +122,35 @@ app.post('/dropcollection', function (req, res) {
 
 
 // listen for contactlist get request
-app.post('/addcollection', function (req, res) {
+app.post('/addDB', function (req, res) {
 	var databaseName = req.body.contactItem ; 
 	console.log('req contackItem: ' + databaseName);
+	var db = new Db(databaseName, new Server('localhost', 27017)); 
+	// Establish connection to db
+	// No error handlling because this is not 'great' code, but its a work around 
+	db.open(function(err, db) {
+	  // Create a null collection
+		db.createCollection("", {w:1}, function(err, collection){
+	  		console.log("DB created"); 
+	  		db.close();
+		});
+	});
+});
 
+
+// listen for contactlist get request
+app.post('/addcollection', function (req, res) {
+	var databaseName = req.body.DB , collectionName = req.body.contactItem ; 
+	console.log('----creat collection req contackItem: ' + databaseName);
 	var db = new Db(databaseName, new Server('localhost', 27017)); 
 	// Establish connection to db
 	db.open(function(err, db) {
-	assert.equal(null, err);
-
+		// Create a collection we want to drop later
+	    db.createCollection(collectionName, function(err, collection){
+		    collection.insert({default:false});
+		    console.log("Collection created"); 
+	  		db.close();
+		}); 
 	});
 });
 

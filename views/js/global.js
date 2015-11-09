@@ -10,6 +10,8 @@ $http.get('/databases').success(function(response) {
     console.log("recived data requested");
     $scope.databases = response;             // init databases from get response
     $scope.DB_NAME = "Select a Database " ;  // init DB_NAME 
+    $scope.DB_INPUT = "" ; 
+    $scope.COLLECTION_INPUT = "" ; 
   });
 }
 
@@ -28,7 +30,7 @@ $scope.editDB = function(contactItem) {
 
 $scope.dropDB = function(contactItem) {
   console.log("drop : "+contactItem);
-    $http.post('/dropcollection', JSON.stringify({'contactItem': contactItem})).success(function(response) {
+    $http.post('/dropDB', JSON.stringify({'contactItem': contactItem})).success(function(response) {
       console.log("DB Deleted: ");
     });
     refresh(); 
@@ -36,10 +38,9 @@ $scope.dropDB = function(contactItem) {
 
 $scope.addDB = function(contactItem) {
   console.log("add : "+contactItem);
-  $http.post('/addcollection', JSON.stringify({'contactItem': contactItem})).success(function(response) {
+  $http.post('/addDB', JSON.stringify({'contactItem': contactItem})).success(function(response) {
       console.log("DB Added: ");
     });
-
   refresh();
 };
 
@@ -66,6 +67,23 @@ $scope.viewCollection = function(contactItem) {
 
       });
   };
+
+
+$scope.addCollection = function(contactItem) {
+  console.log("add Collection: "+contactItem);
+  var objson = {'DB':$scope.DB_NAME,'contactItem':contactItem}; 
+
+  $http.post('/addcollection', objson).success(function(response){
+      console.log("----- posted: -----");
+      console.log("Collection Added: ");
+  }); 
+  refresh();
+};
+
+$scope.changeDog = function(contactItem) {
+  console.log("index number: "+contactItem); 
+  console.log("object count: "+$scope.objs.length);  
+};
 
 $scope.dropCollection = function(contactItem) {
   console.log("drop Collection: "+contactItem);

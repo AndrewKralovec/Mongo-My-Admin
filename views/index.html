@@ -54,15 +54,18 @@
     </table> 
     </div>
     <div class="container">
-        <h4><span ng-bind="DB_NAME" style="color:red;"><!--database--></span></h3>
-        <h3>Collections</h3>
-        <ul class="list-group" ng-repeat="obj in objs">
-            <li class="list-group-item">
-                {{obj.name}}
-                <button class="btn btn-primary btn-xs" data-title="View" data-toggle="modal" data-target="#view" ng-click="viewCollection(obj.name)"><span class="glyphicon glyphicon-plus"></span></button>
-                <button class="btn btn-danger btn-xs" data-title="Drop" data-toggle="modal" data-target="#drop" ng-click="dropCollection(obj.name})"><span class="glyphicon glyphicon-trash"></span></button>
-            </li>
-        </ul> 
+        <div class="row">
+            <h4><span ng-bind="DB_NAME" style="color:red;"><!--database--></span></h4>
+            <h5>Collections</h5>
+            <ul class="list-group" ng-repeat="obj in objs">
+                <li class="list-group-item">
+                    {{obj.name}}
+                    <button class="btn btn-primary btn-xs" data-title="View" data-toggle="modal" data-target="#view" ng-click="viewCollection(obj.name)"><span class="glyphicon glyphicon-pencil"></span></button>
+                    <button class="btn btn-danger btn-xs" data-title="Drop" data-toggle="modal" data-target="#drop" ng-click="dropCollection(obj.name)"><span class="glyphicon glyphicon-trash"></span></button>
+                    <button class="btn btn-danger btn-xs" data-title="Drop" data-toggle="modal" data-target="#drop" ng-click="changeDog($index+1)"><span class="glyphicon glyphicon-trash"></span></button>
+                </li>
+            </ul> 
+        </div>
         <ul ng-repeat="item in items">
             <li>
                 <ul ng-repeat="(key, value) in item">
@@ -74,6 +77,9 @@
             </li>
         </ul>
         <div ng-hide="objs.length">Empty</div> <!-- Show empty if objects has no elements-->
+        <div ng-hide="!objs.length">
+            <h5>New Collection</h5><input class="form-control has-error" ng-model="COLLECTION_INPUT"><button class="btn btn-primary btn-xs" data-title="add_collection" data-toggle="modal" data-target="#add" ng-click="addCollection(COLLECTION_INPUT)"><span class="glyphicon glyphicon-plus"></span></button>
+        </div>
     </div>
 </div>
 
