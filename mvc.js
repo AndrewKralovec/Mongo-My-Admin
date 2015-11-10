@@ -15,14 +15,14 @@ var Db = require('mongodb').Db,
     Code = require('mongodb').Code,
     assert = require('assert');
 
-//configure app
+// Configure app
 var app = express(); 
 
-// store all html files in views 
+// Store all html files in views 
 app.use(express.static(__dirname + '/views'));
-// parses recived json input 
+// Parses recived json input 
 app.use(bodyParser.json());
-// store all js in Scripts folder
+// Store all js in Scripts folder
 app.use(express.static(__dirname + '/scripts'));
 
 
@@ -31,7 +31,7 @@ app.get('/', function (req, res) {
 	res.sendFile('index.html');
 }); 
 
-// listen for contactlist get request, aka transfers the contacklist in mongo to client
+// Listen for contactlist get request, aka transfers the contacklist in mongo to client
 app.get('/databases', function (req, res) {
 	// Default server is set to DB
 	var db = new Db('DB', new Server('localhost', 27017));
@@ -52,7 +52,7 @@ app.get('/databases', function (req, res) {
 	});
 }); 
 
-// listen for contactlist get request
+// Listen for collection Post request
 app.post('/collection', function (req, res) {
 	console.log("-- recived collection post request --"); 
 	var databaseName = req.body.contactItem ; 
@@ -70,7 +70,7 @@ app.post('/collection', function (req, res) {
     });
 }); 
 
-// listen for contactlist get request
+// Listen for viewcontactlist post request
 app.post('/viewcollection', function (req, res) {
 	console.log("-- recived viewcollection post request --"); 
 	var databaseName = req.body.DB , collection = req.body.contactItem ; 
@@ -78,7 +78,7 @@ app.post('/viewcollection', function (req, res) {
 	var db = new Db(databaseName, new Server('localhost', 27017));
 	db.open(function(err, db) {
 	console.log(databaseName+": opened");
-	// Cursor (pointer is just to C), will run through all
+	// Cursor (pointer is just to C), will run through all documents inside the collection 
 	var cursor = db.collection(collection).find();
 		var array = [] ; 
 		cursor.each(function(err, doc) {
@@ -103,7 +103,7 @@ app.post('/viewcollection', function (req, res) {
 
 
 
-// listen for contactlist get request
+// Listen for drop DB post request
 app.post('/dropDB', function (req, res) {
 	var databaseName = req.body.contactItem ; 
 	console.log('req contackItem: ' + databaseName);
@@ -121,7 +121,7 @@ app.post('/dropDB', function (req, res) {
 });
 
 
-// listen for contactlist get request
+// Listen for addDB post request
 app.post('/addDB', function (req, res) {
 	var databaseName = req.body.contactItem ; 
 	console.log('req contackItem: ' + databaseName);
@@ -138,25 +138,44 @@ app.post('/addDB', function (req, res) {
 });
 
 
-// listen for contactlist get request
+// Listen for add contactlist post request
 app.post('/addcollection', function (req, res) {
 	var databaseName = req.body.DB , collectionName = req.body.contactItem ; 
 	console.log('----creat collection req contackItem: ' + databaseName);
 	var db = new Db(databaseName, new Server('localhost', 27017)); 
 	// Establish connection to db
 	db.open(function(err, db) {
-		// Create a collection we want to drop later
-	    db.createCollection(collectionName, function(err, collection){
-		    collection.insert({default:false});
-		    console.log("Collection created"); 
-	  		db.close();
-		}); 
+		// Create a collection 
+	    db.createCollection(collectionName, {w:1}, function(err, collection){
+	  		console.log("Collection created"); 
+	  		//collection.insert({default:false}); Leaves an id, thats no good 
+	  		db.close(); 
+		});
 	});
+});
+
+// Listen for drop contactlist post request
+app.post('/dropcollection', function (req, res) {
+	var databaseName = req.body.DB , collectionName = req.body.contactItem ; 
+	console.log('----drop req for : ' + databaseName);
+	console.log('----collection : ' + collectionName);
+
+	var db = new Db(databaseName, new Server('localhost', 27017)); 
+	// Establish connection to db
+	db.open(function(err, db) {
+	    // Drop the collection 
+        db.dropCollection(collectionName, function(err, result) {
+          assert.equal(null, err);
+          console.log(collectionName+": DROPED"); 
+          db.close();
+      }); 
+	});
+
 });
 
 	
 
-// Implement a web server to listen to requests 
+// Implement a web server to listen to requests [ port 444]
 app.listen(4444, function(){
 	console.log('ready on port 4444'); 
 }); 

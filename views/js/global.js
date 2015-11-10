@@ -5,13 +5,15 @@ app.controller('customersCtrl', function($scope, $http) {
 	console.log("controller connected");
 
 function refresh(){ 
-// create contacklist route 
 $http.get('/databases').success(function(response) {
     console.log("recived data requested");
-    $scope.databases = response;             // init databases from get response
-    $scope.DB_NAME = "Select a Database " ;  // init DB_NAME 
-    $scope.DB_INPUT = "" ; 
-    $scope.COLLECTION_INPUT = "" ; 
+    // Re-init scope vars on refresh 
+    $scope.databases = response;             
+    $scope.DB_NAME = "Select a Database " ;  
+    $scope.DB_INPUT="" ; 
+    $scope.COLLECTION_INPUT="" ;  
+    $scope.objs=""; 
+    $scope.items=""; 
   });
 }
 
@@ -77,16 +79,23 @@ $scope.addCollection = function(contactItem) {
       console.log("----- posted: -----");
       console.log("Collection Added: ");
   }); 
-  refresh();
+  refresh(); // Make a list refresh at a later time 
 };
 
-$scope.changeDog = function(contactItem) {
+$scope.testIndex = function(contactItem) {
   console.log("index number: "+contactItem); 
   console.log("object count: "+$scope.objs.length);  
 };
 
 $scope.dropCollection = function(contactItem) {
   console.log("drop Collection: "+contactItem);
+  var objson = {'DB':$scope.DB_NAME,'contactItem':contactItem}; 
+
+  $http.post('/dropcollection', objson).success(function(response){
+      console.log("----- posted: -----");
+      console.log("Collection Dropped: ");
+  }); 
+  refresh(); // Make a list refresh at a later time 
 };
 
 
