@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+<!DOCTYPEhtml PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns = "http://www.w3.org/1999/xhtml">
@@ -8,6 +8,7 @@
 <!-- Latest compiled and minified CSS for boostrap-->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
 <link href="css/style.css" rel="stylesheet" />
 <!-- scripts -->
 <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
@@ -19,8 +20,8 @@
 </head>
 <body>
 
-<div class="container" ng-app="myApp" ng-controller="customersCtrl">
-    <div class="row">
+<div ng-app="myApp" ng-controller="customersCtrl">
+    <div class="container">
      <div class="ajk-title">
         <img src="images/MongoDB.png" alt="MongoDB">
         <h1>My <span>Mongo</span> Admin page</h1>
@@ -52,8 +53,8 @@
         </tr>
     </table>
     </div>
-    <div class="bottom-row row">
-        <div class="col-sm-12">
+    <div class="container">
+        <div class="row">
             <!-- <h4><span ng-bind="DB_NAME" style="color:red;"></span></h4> -->
             <h4 ng-model="DB_NAME">{{DB_NAME}}</h4>
             <h5>Collections</h5>
@@ -66,38 +67,22 @@
                 </li>
             </ul>
         </div>
-        <div class="col-sm-12">
-            <div class="col-sm-12">
-                <ul ng-repeat="item in items">
+        <ul ng-repeat="item in items">
+            <li>
+                <ul ng-repeat="(key, value) in item">
                     <li>
-                        <ul ng-repeat="(key, value) in item">
-                            <li>
-                                <b>{{key}}</b>
-                                <p>{{value}}</p>
-                            </li>
-                        </ul>
+                        <b>{{key}}</b>
+                        <p>{{value}}</p>
                     </li>
                 </ul>
-            </div>
-            <div class="col-sm-12" ng-hide="!items.length">
-                <div class="col-sm-3">
-                    Object Name:
-                    <input class="form-control ajk-input has-error" ng-model=""/>
-                    <button class="btn btn-primary btn-xs" data-title="add_object" data-toggle="modal" data-target="#add" ng-click=""><span class="glyphicon glyphicon-plus"></span></button>
-                </div>
-                <div class="col-sm-3">
-                    Key: <input class="form-control ajk-input has-error" ng-model=""/> Value: <input class="form-control ajk-input has-error" ng-model=""/>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-12" ng-hide="objs.length">Empty</div> <!-- Show empty if objects has no elements-->
-        <div class="col-sm-12">
+            </li>
+        </ul>
+        <div ng-hide="objs.length">Empty</div> <!-- Show empty if objects has no elements-->
+        <div>
             <h5>New Collection</h5><input class="form-control has-error" ng-model="COLLECTION_INPUT"><button class="btn btn-primary btn-xs" ng-disabled="DB_NAME == 'Select a Database'" data-title="add_collection" data-toggle="modal" data-target="#add" ng-click="addCollection(COLLECTION_INPUT)"><span class="glyphicon glyphicon-plus"></span></button>
         </div>
     </div>
 </div>
-<footer>
-    @Copyright Andrew Kralovec
-</footer>
+
 </body>
 </html>

@@ -25,7 +25,6 @@ app.use(bodyParser.json());
 // Store all js in Scripts folder
 app.use(express.static(__dirname + '/scripts'));
 
-
 // Technology not needed but good practice, especailly when serval people are working on it 
 app.get('/', function (req, res) {
 	res.sendFile('index.html');
@@ -37,10 +36,8 @@ app.get('/databases', function (req, res) {
 	var db = new Db('DB', new Server('localhost', 27017));
 	console.log("-- recived GET request --"); 
 	db.open(function(err, db) {
-
 	  // Use the admin database for the operation
 	  var adminDb = db.admin();
-
 	  // List all the available databases
 	  adminDb.listDatabases(function(err, dbs) {
 	    assert.equal(null, err);
@@ -57,7 +54,6 @@ app.post('/collection', function (req, res) {
 	console.log("-- recived collection post request --"); 
 	var databaseName = req.body.contactItem ; 
 	console.log('req contackItem: ' + databaseName);
-
 	var db = new Db(databaseName, new Server('localhost', 27017));
 	db.open(function(err, db) {
 		db.listCollections().toArray(function(err, collections){
@@ -74,7 +70,6 @@ app.post('/collection', function (req, res) {
 app.post('/viewcollection', function (req, res) {
 	console.log("-- recived viewcollection post request --"); 
 	var databaseName = req.body.DB , collection = req.body.contactItem ; 
-
 	var db = new Db(databaseName, new Server('localhost', 27017));
 	db.open(function(err, db) {
 	console.log(databaseName+": opened");
@@ -101,13 +96,10 @@ app.post('/viewcollection', function (req, res) {
 
 });
 
-
-
 // Listen for drop DB post request
 app.post('/dropDB', function (req, res) {
 	var databaseName = req.body.contactItem ; 
 	console.log('req contackItem: ' + databaseName);
-
 	var db = new Db(databaseName, new Server('localhost', 27017)); 
 	// Establish connection to db
 	db.open(function(err, db) {
@@ -119,7 +111,6 @@ app.post('/dropDB', function (req, res) {
 		});
 	});
 });
-
 
 // Listen for addDB post request
 app.post('/addDB', function (req, res) {
@@ -136,7 +127,6 @@ app.post('/addDB', function (req, res) {
 		});
 	});
 });
-
 
 // Listen for add contactlist post request
 app.post('/addcollection', function (req, res) {
@@ -172,8 +162,6 @@ app.post('/dropcollection', function (req, res) {
 	});
 
 });
-
-	
 
 // Implement a web server to listen to requests [ port 444]
 app.listen(4444, function(){

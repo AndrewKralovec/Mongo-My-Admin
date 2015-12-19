@@ -9,7 +9,7 @@ $http.get('/databases').success(function(response) {
     console.log("recived data requested");
     // Re-init scope vars on refresh 
     $scope.databases = response;             
-    $scope.DB_NAME = "Select a Database " ;  
+    $scope.DB_NAME = 'Select a Database' ;  
     $scope.DB_INPUT="" ; 
     $scope.COLLECTION_INPUT="" ;  
     $scope.objs=""; 

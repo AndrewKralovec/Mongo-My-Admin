@@ -33,3 +33,12 @@
   top: 18px;
   left: 10px;
 }
+.bottom-row{
+  padding-bottom: 90px;
+  outline: 10px solid red;
+  background: transparent;
+}
+.ajk-input{ 
+  width: auto;
+  /*display:inline-block;*/
+}
