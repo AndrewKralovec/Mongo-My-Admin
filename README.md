@@ -21,7 +21,7 @@ When i first starting working with mongo, i hated it. It was usefully for simply
 <h3> Start Mongo My Admin </h3> 
 Clone the project from github to your desired folder location. 
 <code>git clone  "https://github.com/AndrewKralovec/Mongo-My-Admin.git"</code>. 
-Open your terminal in the currect folder destination and run the the script app.js . "node app.js". The server will run on the default port '3000' feel free to change it to any port you wish. 
+Open your terminal in the currect folder destination and run the the script app.js . "node app.js". The server will run on the default port '4444' feel free to change it to any port you wish. 
 
 <h3> Debug E-learn </h3> 
 Debugger json has been set up in .vscode file. run the debugger with 
