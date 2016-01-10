@@ -1,0 +1,76 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+.ajk-table {
+  border: 3px solid #ccc;
+  padding: 15px;
+  margin: 5% 0;
+  box-shadow: 3px 3px 2px #ccc;
+  transition: 0.5s;
+	border-collapse: separate;
+
+}
+
+.ajk-table:hover {
+    box-shadow: 3px 3px 0px transparent;
+    transition: 0.5s;
+}
+
+.ajk-table tr {
+	padding-bottom: 15em;
+	background-color: #E8E8E8 ; 
+}
+
+.ajk-title {
+    background-color: #E8E8E8 ;
+}
+.ajk-title img {
+  float: left;
+  max-width: 100px;
+  max-height: 100px;
+}
+
+.ajk-title h1{
+  position: relative;
+  top: 18px;
+  left: 10px;
+}
+.bottom-row{
+  padding-bottom: 90px;
+  outline: 10px solid red;
+  background: transparent;
+}
+.ajk-input{ 
+  width: auto;
+  display:inline-block;
+}
+
+/* Overwrite color */
+.btn-primary {
+    color: white;
+    background-color: green;
+    border-color: lightgreen;
+}
+
+.btn-primary:hover {
+    color: white;
+    background-color: darkgreen;
+    border-color: green;
+}
+
+.btn-primary.active, .btn-primary:active {
+    color: #FFF;
+    background-color: saddlebrown;
+    border-color: darkgreen;
+}
+
+.btn-primary.focus, .btn-primary:focus {
+    color: #FFF;
+    background-color: saddlebrown;
+    border-color: darkgreen;
+}

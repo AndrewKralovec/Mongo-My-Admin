@@ -1,0 +1,94 @@
+extends layout
+// Gross this looks like python
+block content
+ .container(ng-app='myApp', ng-controller='customersCtrl')
+  .row
+    .ajk-title
+      img(src='images/MongoDB.png', alt='MongoDB')
+      h1
+        span Mongo
+        |  My Admin Page
+    table.table.table-striped.ajk-table
+      thead
+        tr
+          th
+            input#checkall(type='checkbox')
+          th Database Name
+          th Size of Disk
+          th empty
+          th Drop
+          th Edit
+      tr(ng-repeat='contact in databases.databases')
+        td
+          input.checkthis(type='checkbox')
+        td {{ contact.name }}
+        td {{ contact.sizeOnDisk }} 
+        td {{ contact.empty }} 
+        td
+          p(data-placement='top', data-toggle='tooltip', title='Drop')
+            button.btn.btn-danger.btn-xs(data-title='Drop', data-toggle='modal', data-target='#drop', ng-click='dropDB(contact.name)')
+              i.fa.fa-trash
+        td
+          p(data-placement='top', data-toggle='tooltip', title='Edit')
+            button.btn.btn-primary.btn-xs(data-title='Edit', data-toggle='modal', data-target='#edit', ng-click='editDB(contact.name)')
+              i.fa.fa-pencil-square
+      tr
+        th New Database
+        th(colspan='2')
+          input.form-control.has-error(ng-model='DB_INPUT')
+        th
+          p(data-placement='top', data-toggle='tooltip', title='Add New Database')
+            button.btn.btn-primary.btn-xs(data-title='add_database', data-toggle='modal', data-target='#view', ng-click='addDB(DB_INPUT)')
+              i.fa.fa-plus-square
+        th
+          p(data-placement='top', data-toggle='tooltip', title='Update Database')
+            button.btn.btn-primary.btn-xs(data-title='add_database', data-toggle='modal', data-target='#view', ng-click='updateDB(DB_INPUT)')
+              i.fa.fa-compress
+  .bottom-row.row
+    .col-sm-12
+      // <h4><span ng-bind="DB_NAME" style="color:red;"></span></h4>
+      h2(ng-model='DB_NAME')
+        center {{DB_NAME}}
+        h5 Collections
+        ul.list-group(ng-repeat='obj in objs')
+          li.list-group-item
+            | {{obj.name}}
+            button.btn.btn-primary.btn-xs(data-title='View', data-toggle='modal', data-target='#view', ng-click='viewCollection(obj.name)')
+              i.fa.fa-pencil-square
+            button.btn.btn-danger.btn-xs(data-title='Drop', data-toggle='modal', data-target='#drop', ng-click='dropCollection(obj.name)')
+              i.fa.fa-trash
+            // <button class="btn btn-danger btn-xs" data-title="Drop" data-toggle="modal" data-target="#drop" ng-click="testIndex($index+1)"><span class="glyphicon glyphicon-trash"></span></button>
+    .col-sm-12
+      .col-sm-12
+        ul(ng-repeat='item in items')
+          li
+            ul(ng-repeat='(key, value) in item')
+              li
+                b {{key}}
+                p {{value}}
+      .col-sm-12(ng-hide='!items.length')
+        .col-sm-6
+          | Object Name, Json Format
+          input.form-control.ajk-input.has-error(placeholder="example{ key:'value'}", type='text' ng-model="newData")
+          select(ng-options='obj as obj.name for obj in objs', ng-model='collection')
+            option(style='display:none', value='') select a collection
+          button.btn.btn-primary.btn-xs(data-title='add_object', data-toggle='modal', data-target='#add', ng-click='insertData(newData,collection.name)')
+            i.fa.fa-plus-square
+          {{newData +' ' +collection.name}}
+          // <input ng-model="numberOfKeys" type="number" name="quantity" min="1" max="20"/>
+        //
+          <div class="col-sm-6">
+          {{numberOfKeys}}
+          <ul ng-repeat="">
+          <li>
+          Key: <input class="form-control ajk-input has-error" ng-model=""/> Value: <input class="form-control ajk-input has-error" ng-model=""/>
+          </li>
+          </ul>
+          </div>
+    .col-sm-12(ng-hide='objs.length') Empty
+    // Show empty if objects has no elements
+    .col-sm-12
+      h5 New Collection
+      input.form-control.ajk-input.has-error(ng-model='COLLECTION_INPUT')
+      button.btn.btn-primary.btn-xs(ng-disabled="DB_NAME == 'Select a Database'", data-title='add_collection', data-toggle='modal', data-target='#add', ng-click='addCollection(COLLECTION_INPUT)')
+        i.fa.fa-plus-square

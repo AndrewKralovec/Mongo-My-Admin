@@ -1,29 +1,27 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns = "http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
-<!-- Latest compiled and minified CSS for boostrap-->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-<link href="css/style.css" rel="stylesheet" />
-<!-- scripts -->
-<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src= "js/global.js"></script>
-
-<title>Kralovec Port 8081 </title>
-
-</head>
-<body>
-
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Andrew Kralovec E-Learn</title>
+    <!-- CSS-->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="/stylesheets/style.css" rel="stylesheet">
+    <link href="/stylesheets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- JS-->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+    <script src="/javascripts/angular-ui-router.min.js"></script>
+  </head>
+  <body>
 <div class="container" ng-app="myApp" ng-controller="customersCtrl">
     <div class="row">
      <div class="ajk-title">
         <img src="images/MongoDB.png" alt="MongoDB">
-        <h1>My <span>Mongo</span> Admin page</h1>
+        <h1><span>Mongo</span> My Admin Page</h1>
      </div>
         <table class="table table-striped ajk-table">
          <thead>
@@ -55,14 +53,14 @@
     <div class="bottom-row row">
         <div class="col-sm-12">
             <!-- <h4><span ng-bind="DB_NAME" style="color:red;"></span></h4> -->
-            <h4 ng-model="DB_NAME">{{DB_NAME}}</h4>
+            <h2 ng-model="DB_NAME"><center>{{DB_NAME}}</center></h4>
             <h5>Collections</h5>
             <ul class="list-group" ng-repeat="obj in objs">
                 <li class="list-group-item">
                     {{obj.name}}
                     <button class="btn btn-primary btn-xs" data-title="View" data-toggle="modal" data-target="#view" ng-click="viewCollection(obj.name)"><span class="glyphicon glyphicon-pencil"></span></button>
                     <button class="btn btn-danger btn-xs" data-title="Drop" data-toggle="modal" data-target="#drop" ng-click="dropCollection(obj.name)"><span class="glyphicon glyphicon-trash"></span></button>
-                    <button class="btn btn-danger btn-xs" data-title="Drop" data-toggle="modal" data-target="#drop" ng-click="testIndex($index+1)"><span class="glyphicon glyphicon-trash"></span></button>
+                    <!-- <button class="btn btn-danger btn-xs" data-title="Drop" data-toggle="modal" data-target="#drop" ng-click="testIndex($index+1)"><span class="glyphicon glyphicon-trash"></span></button> -->
                 </li>
             </ul>
         </div>
@@ -74,25 +72,39 @@
                             <li>
                                 <b>{{key}}</b>
                                 <p>{{value}}</p>
+                                 <ul ng-repeat="(subkey, subvalue)  in value">
+                                    <li>
+                                        <b>{{subkey}}</b>
+                                        <p>{{subvalue}}</p>
+                                    </li>
+                                 </ul>
                             </li>
                         </ul>
                     </li>
                 </ul>
             </div>
             <div class="col-sm-12" ng-hide="!items.length">
-                <div class="col-sm-3">
-                    Object Name:
-                    <input class="form-control ajk-input has-error" ng-model=""/>
+                <div class="col-sm-6">
+                    Object Name, Json Format
+                    <input placeholder="example{ key:'value'}" class="form-control ajk-input has-error" type="text"/>
                     <button class="btn btn-primary btn-xs" data-title="add_object" data-toggle="modal" data-target="#add" ng-click=""><span class="glyphicon glyphicon-plus"></span></button>
+                   <!-- <input ng-model="numberOfKeys" type="number" name="quantity" min="1" max="20"/> -->
                 </div>
-                <div class="col-sm-3">
-                    Key: <input class="form-control ajk-input has-error" ng-model=""/> Value: <input class="form-control ajk-input has-error" ng-model=""/>
+                <!--
+                <div class="col-sm-6">
+                    {{numberOfKeys}}
+                    <ul ng-repeat="">
+                            <li>
+                                Key: <input class="form-control ajk-input has-error" ng-model=""/> Value: <input class="form-control ajk-input has-error" ng-model=""/>
+                            </li>
+                    </ul>
                 </div>
+                -->
             </div>
         </div>
         <div class="col-sm-12" ng-hide="objs.length">Empty</div> <!-- Show empty if objects has no elements-->
         <div class="col-sm-12">
-            <h5>New Collection</h5><input class="form-control has-error" ng-model="COLLECTION_INPUT"><button class="btn btn-primary btn-xs" ng-disabled="DB_NAME == 'Select a Database'" data-title="add_collection" data-toggle="modal" data-target="#add" ng-click="addCollection(COLLECTION_INPUT)"><span class="glyphicon glyphicon-plus"></span></button>
+            <h5>New Collection</h5><input class="form-control ajk-input has-error" ng-model="COLLECTION_INPUT"><button class="btn btn-primary btn-xs" ng-disabled="DB_NAME == 'Select a Database'" data-title="add_collection" data-toggle="modal" data-target="#add" ng-click="addCollection(COLLECTION_INPUT)"><span class="glyphicon glyphicon-plus"></span></button>
         </div>
     </div>
 </div>

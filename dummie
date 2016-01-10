@@ -1,6 +1,0 @@
-	 var contactlist = [
-        {name:'Andrew',email:'Andrew@email.com',number:'1'},
-        {name:'Kralovec',email:'Kralovec@email.com',number:'2'},
-        {name:'Denmark',email:'Denmark@email.com',number:'3'}
-    ];
-    res.json(contactlist); 
