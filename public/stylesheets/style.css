@@ -74,3 +74,12 @@ a {
     background-color: saddlebrown;
     border-color: darkgreen;
 }
+
+ol  {
+    /*list-style: square url("/images/tinyIcon.png");*/
+    list-style: none ; 
+}
+
+ol > li > ul > li:hover  {
+    background-color:#ccffcc ; 
+}

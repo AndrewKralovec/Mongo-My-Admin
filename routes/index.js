@@ -45,7 +45,7 @@ router.get('/databases', function (req, res) {
 // Listen for collection Post request
 router.post('/collection', function (req, res) {
 	console.log("-- recived collection post request --"); 
-	var databaseName = req.body.contactItem ; 
+	var databaseName = req.body.collection ; 
 	console.log('req contackItem: ' + databaseName);
 	var db = new Db(databaseName, new Server('localhost', 27017));
 	db.open(function(err, db) {
@@ -62,7 +62,7 @@ router.post('/collection', function (req, res) {
 // Listen for viewcontactlist post request
 router.post('/viewcollection', function (req, res) {
 	console.log("-- recived viewcollection post request --"); 
-	var databaseName = req.body.DB , collection = req.body.contactItem ; 
+	var databaseName = req.body.DB , collection = req.body.collection ; 
 	var db = new Db(databaseName, new Server('localhost', 27017));
 	db.open(function(err, db) {
 	console.log(databaseName+": opened");
@@ -91,7 +91,7 @@ router.post('/viewcollection', function (req, res) {
 
 // Listen for drop DB post request
 router.post('/dropDB', function (req, res) {
-	var databaseName = req.body.contactItem ; 
+	var databaseName = req.body.collection ; 
 	console.log('req contackItem: ' + databaseName);
 	var db = new Db(databaseName, new Server('localhost', 27017)); 
 	// Establish connection to db
@@ -107,7 +107,7 @@ router.post('/dropDB', function (req, res) {
 
 // Listen for addDB post request
 router.post('/addDB', function (req, res) {
-	var databaseName = req.body.contactItem ; 
+	var databaseName = req.body.collection ; 
 	console.log('req contackItem: ' + databaseName);
 	var db = new Db(databaseName, new Server('localhost', 27017)); 
 	// Establish connection to db
@@ -123,7 +123,7 @@ router.post('/addDB', function (req, res) {
 
 // Listen for add contactlist post request
 router.post('/addcollection', function (req, res) {
-	var databaseName = req.body.DB , collectionName = req.body.contactItem ; 
+	var databaseName = req.body.DB , collectionName = req.body.collection ; 
 	console.log('----creat collection req contackItem: ' + databaseName);
 	var db = new Db(databaseName, new Server('localhost', 27017)); 
 	// Establish connection to db
@@ -139,7 +139,7 @@ router.post('/addcollection', function (req, res) {
 
 // Listen for drop contactlist post request
 router.post('/dropcollection', function (req, res) {
-	var databaseName = req.body.DB , collectionName = req.body.contactItem ; 
+	var databaseName = req.body.DB , collectionName = req.body.collection ; 
 	console.log('----drop req for : ' + databaseName);
 	console.log('----collection : ' + collectionName);
 
@@ -157,19 +157,36 @@ router.post('/dropcollection', function (req, res) {
 });
 
 // Listen for Create collection post request
-router.post('/dropcollection', function (req, res) {
-	var databaseName = req.body.DB , collection = req.body.collection, newData = req.body.newData  ; 
-	var db = new Db(databaseName, new Server('localhost', 27017)); 
+router.post('/insertData', function (req, res) {
+	var databaseName = req.body.DB , collection = req.body.collection, newData = req.body.data  ; 
+	var test = JSON.parse(newData);
+    var db = new Db(databaseName, new Server('localhost', 27017)); 
     db.open(function (err, db) {
         // Insert a document in the capped collection
-        db.collection(collection).insert(newData, { w: 1 }, function (err, result) {
+        db.collection(collection).insert(test, { w: 1 }, function (err, result) {
             assert.equal(null, err);
             console.log("New user added");
-            //res.json("Test");
+            res.json(true);
             db.close();
         });
     });
 
 });
 
+// Listen for Create collection post request
+router.post('/dropData', function (req, res) {
+	var databaseName = req.body.DB , collection = req.body.collection, data = req.body.data  ; 
+    var par = {"_id" : ObjectID(data._id)};
+    var db = new Db(databaseName, new Server('localhost', 27017)); 
+    db.open(function (err, db) {
+        // Insert a document in the capped collection
+        db.collection(collection).remove(par,function (err, result) {
+            assert.equal(null, err);
+            console.log("Data removed");
+            res.json(true);
+            db.close();
+        });
+    });
+
+});
 module.exports = router;

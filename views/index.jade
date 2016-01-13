@@ -58,11 +58,17 @@ block content
             button.btn.btn-danger.btn-xs(data-title='Drop', data-toggle='modal', data-target='#drop', ng-click='dropCollection(obj.name)')
               i.fa.fa-trash
             // <button class="btn btn-danger btn-xs" data-title="Drop" data-toggle="modal" data-target="#drop" ng-click="testIndex($index+1)"><span class="glyphicon glyphicon-trash"></span></button>
+    h4(ng-model='DB_COLLECTION')
+      center {{DB_COLLECTION}}
     .col-sm-12
       .col-sm-12
-        ul(ng-repeat='item in items')
+        ol(ng-repeat='item in items')
           li
-            ul(ng-repeat='(key, value) in item')
+            img(src='/images/tinyIcon.png', alt='icon')
+            button.btn.btn-danger.btn-xs(data-title='Drop', data-toggle='modal', data-target='#drop', style='float:right;', ng-click='dropData(item,DB_COLLECTION)')
+              i.fa.fa-trash
+          li
+            ul(style='list-style-type:circle' ng-repeat='(key, value) in item')
               li
                 b {{key}}
                 p {{value}}
@@ -74,7 +80,7 @@ block content
             option(style='display:none', value='') select a collection
           button.btn.btn-primary.btn-xs(data-title='add_object', data-toggle='modal', data-target='#add', ng-click='insertData(newData,collection.name)')
             i.fa.fa-plus-square
-          {{newData +' ' +collection.name}}
+           {{newData +' ' +DB_COLLECTION}}
           // <input ng-model="numberOfKeys" type="number" name="quantity" min="1" max="20"/>
         //
           <div class="col-sm-6">
