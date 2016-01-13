@@ -53,10 +53,11 @@ block content
         ul.list-group(ng-repeat='obj in objs')
           li.list-group-item
             | {{obj.name}}
-            button.btn.btn-primary.btn-xs(data-title='View', data-toggle='modal', data-target='#view', ng-click='viewCollection(obj.name)')
-              i.fa.fa-pencil-square
-            button.btn.btn-danger.btn-xs(data-title='Drop', data-toggle='modal', data-target='#drop', ng-click='dropCollection(obj.name)')
-              i.fa.fa-trash
+            div(style='float:right;')
+              button.btn.btn-primary.btn-xs(data-title='View', data-toggle='modal', data-target='#view', ng-click='viewCollection(obj.name)')
+                i.fa.fa-pencil-square
+              button.btn.btn-danger.btn-xs(data-title='Drop', data-toggle='modal', data-target='#drop', ng-click='dropCollection(obj.name)')
+                i.fa.fa-trash
             // <button class="btn btn-danger btn-xs" data-title="Drop" data-toggle="modal" data-target="#drop" ng-click="testIndex($index+1)"><span class="glyphicon glyphicon-trash"></span></button>
     h4(ng-model='DB_COLLECTION')
       center {{DB_COLLECTION}}

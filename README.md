@@ -3,7 +3,7 @@
 
 Mongo My Admin, is a webpage interface for handling your mongo database, much like php my admin. 
 
-![mongo_icon](https://github.com/AndrewKralovec/E-learn/blob/master/views/images/MyMongoAdmin.png)
+![mongo_icon](https://github.com/AndrewKralovec/Mongo-My-Admin/blob/master/public/images/MongoPeek.png)
 
 
 <h3> About </h3> 

@@ -37,24 +37,19 @@ refresh();
 
 
 $scope.editDB = function(collection) {
-  console.log(collection);
-    $http.post('/collection', JSON.stringify({'collection': collection})).success(function(response) {
+  $http.post('/collection', JSON.stringify({'collection': collection})).success(function(response) {
       $scope.DB_NAME = collection; 
       $scope.objs = response ; 
-      console.log("posted: "+response);
-    });
-  };
+   });
+};
 
 $scope.dropDB = function(collection) {
-  console.log("drop : "+collection);
-    $http.post('/dropDB', JSON.stringify({'collection': collection})).success(function(response) {
-      console.log("DB Deleted: ");
-    });
+  $http.post('/dropDB', JSON.stringify({'collection': collection})).success(function(response) {
     refresh(); 
+   });
 };
 
 $scope.addDB = function(collection) {
-  console.log("add : "+collection);
   $http.post('/addDB', JSON.stringify({'collection': collection})).success(function(response) {
       console.log("DB Added: ");
     });
@@ -67,20 +62,16 @@ $scope.updateDB = function(collection) {
 
 
 $scope.viewCollection = function(collection) {
-  console.log("View: "+collection);
   $scope.DB_COLLECTION = collection ; 
   var objson = {'DB':$scope.DB_NAME,'collection':collection};  
    listRefresh(objson);
-  };
+};
 
 $scope.addCollection = function(collection) {
-  console.log("add Collection: "+collection);
   var objson = {'DB':$scope.DB_NAME,'collection':collection}; 
   $http.post('/addcollection', objson).success(function(response){
-      console.log("----- posted: -----");
-      console.log("Collection Added: ");
+    refresh(); // Make a list refresh at a later time 
   }); 
-  refresh(); // Make a list refresh at a later time 
 };
 
 $scope.testIndex = function(collection) {
@@ -89,35 +80,22 @@ $scope.testIndex = function(collection) {
 };
 
 $scope.dropCollection = function(collection) {
-  console.log("drop Collection: "+collection);
   var objson = {'DB':$scope.DB_NAME,'collection':collection}; 
-
   $http.post('/dropcollection', objson).success(function(response){
-      console.log("----- posted: -----");
-      console.log("Collection Dropped: ");
+    refresh(); // Make a list refresh at a later time 
   }); 
-  refresh(); // Make a list refresh at a later time 
 };
 
 $scope.insertData = function(data,collection){
-    console.log(data);
-    console.log(collection);
       var objson = {'DB':$scope.DB_NAME,'collection':collection,'data':data}; 
       $http.post('/insertData', objson).success(function(response){
-        alert("response");
-        console.log("----- posted: -----");
-        console.log("Data inserted: ");
         listRefresh(objson);
   });
 };
 
 $scope.dropData = function(data,collection) {
-    console.log(data);
-    console.log(collection);
     var objson = {'DB':$scope.DB_NAME,'collection':collection,'data':data}; 
     $http.post('/dropData', objson).success(function(response){
-        console.log("----- posted: -----");
-        console.log("Data Droped: ");
         listRefresh(objson);
   });
 }; 
