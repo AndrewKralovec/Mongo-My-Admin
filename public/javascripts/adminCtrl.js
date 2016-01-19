@@ -88,9 +88,14 @@ $scope.dropCollection = function(collection) {
 
 $scope.insertData = function(data,collection){
       var objson = {'DB':$scope.DB_NAME,'collection':collection,'data':data}; 
-      $http.post('/insertData', objson).success(function(response){
-        listRefresh(objson);
-  });
+    try {
+        JSON.parse(data);
+        $http.post('/insertData', objson).success(function(response){
+            listRefresh(objson);
+        });
+    } catch (ex) {
+        alert("Not valid Json object");
+    }
 };
 
 $scope.dropData = function(data,collection) {
