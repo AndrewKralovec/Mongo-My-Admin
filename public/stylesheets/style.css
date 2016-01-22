@@ -83,3 +83,7 @@ ol  {
 ol > li > ul > li:hover  {
     background-color:#ccffcc ; 
 }
+
+.list-group-item:hover{
+    background-color:#ccffcc ; 
+}
