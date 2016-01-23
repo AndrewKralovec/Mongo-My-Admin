@@ -157,14 +157,12 @@ router.post('/dropcollection', function (req, res) {
 });
 
 // Listen for Create collection post request
-router.post('/insertData', function (err, req, res) {
-	var databaseName, collection, newData; 
-    databaseName = req.body.DB , collection = req.body.collection, newData = req.body.data ;
-	var test = JSON.parse(newData);
+router.post('/insertData', function (req, res, next) {
+	var databaseName = req.body.DB , collection = req.body.collection, data = req.body.data ;
     var db = new Db(databaseName, new Server('localhost', 27017)); 
     db.open(function (err, db) {
         // Insert a document in the capped collection
-            db.collection(collection).insert(test, { w: 1 }, function (err, result) {
+            db.collection(collection).insert(JSON.parse(data), { w: 1 }, function (err, result) {
                 assert.equal(null, err);
                 console.log("New user added");
                 res.json(true);

@@ -87,9 +87,10 @@ $scope.dropCollection = function(collection) {
 };
 
 $scope.insertData = function(data,collection){
-      var objson = {'DB':$scope.DB_NAME,'collection':collection,'data':data}; 
+
     try {
         JSON.parse(data);
+        var objson = {'DB':$scope.DB_NAME,'collection':collection,'data':data}; 
         $http.post('/insertData', objson).success(function(response){
             listRefresh(objson);
         });
