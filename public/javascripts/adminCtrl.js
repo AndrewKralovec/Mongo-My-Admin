@@ -1,116 +1,105 @@
 var app = angular.module('myApp', []);
 
 
-app.controller('customersCtrl', function($scope, $http) {
-	console.log("controller connected");
+app.controller('customersCtrl', function ($scope, $http) {
 
-function refresh(){ 
-$http.get('/databases').success(function(response) {
-    console.log("recived data requested");
-    // Re-init scope vars on refresh 
-    $scope.databases = response;             
-    $scope.DB_NAME = 'Select a Database' ;  
-    $scope.DB_INPUT="" ; 
-    $scope.COLLECTION_INPUT="" ;  
-    $scope.objs=""; 
-    $scope.items=""; 
-    $scope.DB_COLLECTION =""; 
-  });
-}
+    function refresh() {
+        $http.get('/databases').success(function (response) {
+            // Re-init scope vars on refresh 
+            $scope.databases = response;
+            $scope.DB_NAME = 'Select a Database';
+            $scope.DB_INPUT = "";
+            $scope.COLLECTION_INPUT = "";
+            $scope.objs = "";
+            $scope.items = "";
+            $scope.DB_COLLECTION = "";
+        });
+    }
 
-function listRefresh(obj){
-$http.post('/viewcollection',obj).success(function(response) {
-      console.log("----- posted: -----");
-      console.log("response: "+response);
-      $scope.items = response ; 
-      console.log("------------");
-      /* 
-      array.forEach(function(entry) {
-          console.log(entry);
-      });
-      */
-  });
-}
+    function collectionRefresh() {
+        $http.post('/collection', JSON.stringify({ 'DB': $scope.DB_NAME })).success(function (response) {
+            $scope.objs = response;
+            $scope.DB_COLLECTION = "";
+        });
+    }
 
-// Call refresh to init cantacklist 
-refresh(); 
+    function listRefresh(obj) {
+        $http.post('/viewcollection', obj).success(function (response) {
+            $scope.items = response;
+        });
+    }
+
+    // Call refresh to init cantacklist 
+    refresh();
 
 
-$scope.editDB = function(collection) {
-  $http.post('/collection', JSON.stringify({'collection': collection})).success(function(response) {
-      $scope.DB_NAME = collection; 
-      $scope.objs = response ; 
-   });
-};
+    $scope.editDB = function (DB) {
+        $http.post('/collection', JSON.stringify({ 'DB': DB })).success(function (response) {
+            $scope.DB_NAME = DB;
+            $scope.objs = response;
+        });
+    };
 
-$scope.dropDB = function(collection) {
-  $http.post('/dropDB', JSON.stringify({'collection': collection})).success(function(response) {
-    refresh(); 
-   });
-};
+    $scope.dropDB = function (DB) {
+        $http.post('/dropDB', JSON.stringify({ 'DB': DB })).success(function (response) {
+            refresh();
+        });
+    };
 
-$scope.addDB = function(collection) {
-  $http.post('/addDB', JSON.stringify({'collection': collection})).success(function(response) {
-      console.log("DB Added: ");
-    });
-  refresh();
-};
+    $scope.addDB = function (DB) {
+        $http.post('/addDB', JSON.stringify({ 'DB': DB })).success(function (response) {
+            console.log("DB Added: ");
+            refresh();
+        });
+    };
 
-$scope.updateDB = function(collection) {
-  console.log("udpate : "+collection);
-};
+    $scope.updateDB = function (DB) {
+        console.log("udpate : " + DB);
+    };
 
 
-$scope.viewCollection = function(collection) {
-  $scope.DB_COLLECTION = collection ; 
-  var objson = {'DB':$scope.DB_NAME,'collection':collection};  
-   listRefresh(objson);
-};
+    $scope.viewCollection = function (collection) {
+        $scope.DB_COLLECTION = collection;
+        var objson = { 'DB': $scope.DB_NAME, 'collection': collection };
+        listRefresh(objson);
+    };
 
-$scope.addCollection = function(collection) {
-  var objson = {'DB':$scope.DB_NAME,'collection':collection}; 
-  $http.post('/addcollection', objson).success(function(response){
-    refresh(); // Make a list refresh at a later time 
-  }); 
-};
+    $scope.addCollection = function (collection) {
+        var objson = { 'DB': $scope.DB_NAME, 'collection': collection };
+        $http.post('/addcollection', objson).success(function (response) {
+            collectionRefresh();
+        });
+    };
 
-$scope.testIndex = function(collection) {
-  console.log("index number: "+collection); 
-  //alert("object count: "+$scope.objs.length); // object count 
-};
+    $scope.testIndex = function (collection) {
+        console.log("index number: " + collection); 
+        //alert("object count: "+$scope.objs.length); // object count 
+    };
 
-$scope.dropCollection = function(collection) {
-  var objson = {'DB':$scope.DB_NAME,'collection':collection}; 
-  $http.post('/dropcollection', objson).success(function(response){
-    refresh(); // Make a list refresh at a later time 
-  }); 
-};
+    $scope.dropCollection = function (collection) {
+        var objson = { 'DB': $scope.DB_NAME, 'collection': collection };
+        $http.post('/dropcollection', objson).success(function (response) {
+            collectionRefresh();
+        });
+    };
 
-$scope.insertData = function(data,collection){
+    $scope.insertData = function (data, collection) {
+        try {
+            JSON.parse(data);
+            var objson = { 'DB': $scope.DB_NAME, 'collection': collection, 'data': data };
+            $http.post('/insertData', objson).success(function (response) {
+                listRefresh(objson);
+            });
+        } catch (ex) {
+            alert("Not valid Json object");
+        }
+    };
 
-    try {
-        JSON.parse(data);
-        var objson = {'DB':$scope.DB_NAME,'collection':collection,'data':data}; 
-        $http.post('/insertData', objson).success(function(response){
+    $scope.dropData = function (data, collection) {
+        var objson = { 'DB': $scope.DB_NAME, 'collection': collection, 'data': data };
+        $http.post('/dropData', objson).success(function (response) {
             listRefresh(objson);
         });
-    } catch (ex) {
-        alert("Not valid Json object");
-    }
-};
+    };
 
-$scope.dropData = function(data,collection) {
-    var objson = {'DB':$scope.DB_NAME,'collection':collection,'data':data}; 
-    $http.post('/dropData', objson).success(function(response){
-        listRefresh(objson);
-  });
-}; 
-
-  /*
-  $scope.numberRange = function(count){
-    return new Array(count);
-  };
-  */
-
-
-});// Controller 
+});

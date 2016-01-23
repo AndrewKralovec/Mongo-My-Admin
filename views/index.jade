@@ -18,19 +18,19 @@ block content
           th empty
           th Drop
           th Edit
-      tr(ng-repeat='contact in databases.databases')
+      tr(ng-repeat='db in databases.databases')
         td
           input.checkthis(type='checkbox')
-        td {{ contact.name }}
-        td {{ contact.sizeOnDisk }} 
-        td {{ contact.empty }} 
+        td {{ db.name }}
+        td {{ db.sizeOnDisk }} 
+        td {{ db.empty }} 
         td
           p(data-placement='top', data-toggle='tooltip', title='Drop')
-            button.btn.btn-danger.btn-xs(data-title='Drop', data-toggle='modal', data-target='#drop', ng-click='dropDB(contact.name)')
+            button.btn.btn-danger.btn-xs(data-title='Drop', data-toggle='modal', data-target='#drop', ng-click='dropDB(db.name)')
               i.fa.fa-trash
         td
           p(data-placement='top', data-toggle='tooltip', title='Edit')
-            button.btn.btn-primary.btn-xs(data-title='Edit', data-toggle='modal', data-target='#edit', ng-click='editDB(contact.name)')
+            button.btn.btn-primary.btn-xs(data-title='Edit', data-toggle='modal', data-target='#edit', ng-click='editDB(db.name)')
               i.fa.fa-pencil-square
       tr
         th New Database
@@ -81,7 +81,7 @@ block content
             option(style='display:none', value='') select a collection
           button.btn.btn-primary.btn-xs(data-title='add_object', data-toggle='modal', data-target='#add', ng-click='insertData(newData,collection.name)')
             i.fa.fa-plus-square
-           {{newData +' ' +DB_COLLECTION}}
+          {{newData +' ' +DB_COLLECTION}}
           // <input ng-model="numberOfKeys" type="number" name="quantity" min="1" max="20"/>
         //
           <div class="col-sm-6">
