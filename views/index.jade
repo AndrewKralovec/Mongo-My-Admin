@@ -54,6 +54,8 @@ block content
           li.list-group-item
             | {{obj.name}}
             div(style='float:right;')
+              button.btn.btn-primary.btn-xs(data-title='View', data-toggle='modal', data-target='#view', ng-click='minimize()')
+                i.fa.fa-minus-square
               button.btn.btn-primary.btn-xs(data-title='View', data-toggle='modal', data-target='#view', ng-click='viewCollection(obj.name)')
                 i.fa.fa-pencil-square
               button.btn.btn-danger.btn-xs(data-title='Drop', data-toggle='modal', data-target='#drop', ng-click='dropCollection(obj.name)')

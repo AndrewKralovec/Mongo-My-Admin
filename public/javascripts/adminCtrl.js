@@ -63,6 +63,9 @@ app.controller('customersCtrl', function ($scope, $http) {
         var objson = { 'DB': $scope.DB_NAME, 'collection': collection };
         listRefresh(objson);
     };
+    $scope.minimize = function(){
+      $scope.items =  ""; 
+    };
 
     $scope.addCollection = function (collection) {
         var objson = { 'DB': $scope.DB_NAME, 'collection': collection };
