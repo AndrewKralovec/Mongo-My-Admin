@@ -9,11 +9,10 @@ a {
 .ajk-table {
   border: 3px solid #ccc;
   padding: 15px;
-  margin: 5% 0;
   box-shadow: 3px 3px 2px #ccc;
   transition: 0.5s;
 	border-collapse: separate;
-
+  width:100%; 
 }
 
 .ajk-table:hover {
@@ -24,6 +23,10 @@ a {
 .ajk-table tr {
 	padding-bottom: 15em;
 	background-color: #E8E8E8 ; 
+}
+
+.ajk-table td, th {
+    padding: 10px;
 }
 
 .ajk-title {
@@ -42,7 +45,6 @@ a {
 }
 .bottom-row{
   padding-bottom: 90px;
-  outline: 10px solid red;
   background: transparent;
 }
 .ajk-input{ 
@@ -74,7 +76,11 @@ a {
     background-color: saddlebrown;
     border-color: darkgreen;
 }
-
+/* 2 annoying to fix
+.collectionBar, p {
+    float:left ; 
+}
+*/
 ol  {
     /*list-style: square url("/images/tinyIcon.png");*/
     list-style: none ; 
@@ -86,4 +92,21 @@ ol > li > ul > li:hover  {
 
 .list-group-item:hover{
     background-color:#ccffcc ; 
+}
+
+a.scrollup {
+    outline: 0;
+    text-align: center;
+}
+.scrollup {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    bottom: 0px;
+    right: 20px;
+    background: #222;
+}
+.alert-info {
+   background: #f9f9f9 ; 
+   border-color: transparent; 
 }

@@ -2,11 +2,17 @@ var app = angular.module('myApp', []);
 
 
 app.controller('customersCtrl', function ($scope, $http) {
+    
 
     function refresh() {
         $http.get('/databases').success(function (response) {
             // Re-init scope vars on refresh 
             $scope.databases = response;
+            $scope.menu = {
+                database:true,
+                collection:false,
+                data:false
+            }; 
             $scope.DB_NAME = 'Select a Database';
             $scope.DB_INPUT = "";
             $scope.COLLECTION_INPUT = "";
@@ -31,14 +37,19 @@ app.controller('customersCtrl', function ($scope, $http) {
 
     // Call refresh to init cantacklist 
     refresh();
-
-
+    
     $scope.editDB = function (DB) {
+        $scope.menu.collection = true ; 
+        $scope.menu.database = false ; 
         $http.post('/collection', JSON.stringify({ 'DB': DB })).success(function (response) {
             $scope.DB_NAME = DB;
             $scope.objs = response;
         });
     };
+    $scope.toggleMenu = function() {
+        $scope.menu.database = true ; 
+        refresh(); 
+    }
 
     $scope.dropDB = function (DB) {
         $http.post('/dropDB', JSON.stringify({ 'DB': DB })).success(function (response) {
@@ -59,6 +70,8 @@ app.controller('customersCtrl', function ($scope, $http) {
 
 
     $scope.viewCollection = function (collection) {
+        $scope.menu.collection = false ; 
+        $scope.menu.data = true ; 
         $scope.DB_COLLECTION = collection;
         var objson = { 'DB': $scope.DB_NAME, 'collection': collection };
         listRefresh(objson);
@@ -106,3 +119,5 @@ app.controller('customersCtrl', function ($scope, $http) {
     };
 
 });
+
+

@@ -1,13 +1,18 @@
 extends layout
 // Gross this looks like python
 block content
- .container(ng-app='myApp', ng-controller='customersCtrl')
+ .container(ng-app='myApp', ng-controller='customersCtrl' ng-init="menu")
   .row
     .ajk-title
       img(src='images/logo.png', alt='MongoMyAdminLogo')
       h1
         span Mongo
         |  My Admin Page
+      .alert.alert-info(ng-show='!menu.database')
+        a.btn.btn-xs.btn-primary.pull-right(ng-click='toggleMenu()') Home
+        strong Info:
+        |  Return to database table
+  .row(ng-show='menu.database')
     table.table.table-striped.ajk-table
       thead
         tr
@@ -38,13 +43,13 @@ block content
           input.form-control.has-error(ng-model='DB_INPUT')
         th
           p(data-placement='top', data-toggle='tooltip', title='Add New Database')
-            button.btn.btn-primary.btn-xs(data-title='add_database', data-toggle='modal', data-target='#view', ng-click='addDB(DB_INPUT)')
+            button.btn.btn-primary.btn-xs(data-title='Add New Database', data-toggle='modal', data-target='#view', ng-click='addDB(DB_INPUT)')
               i.fa.fa-plus-square
         th
           p(data-placement='top', data-toggle='tooltip', title='Update Database')
-            button.btn.btn-primary.btn-xs(data-title='add_database', data-toggle='modal', data-target='#view', ng-click='updateDB(DB_INPUT)')
+            button.btn.btn-primary.btn-xs(data-title='Update Database', data-toggle='modal', data-target='#view', ng-click='updateDB(DB_INPUT)')
               i.fa.fa-compress
-  .bottom-row.row
+  .bottom-row.row(ng-show='menu.collection')
     .col-sm-12
       // <h4><span ng-bind="DB_NAME" style="color:red;"></span></h4>
       h2(ng-model='DB_NAME')
@@ -53,35 +58,53 @@ block content
         ul.list-group(ng-repeat='obj in objs')
           li.list-group-item
             | {{obj.name}}
-            div(style='float:right;')
-              button.btn.btn-primary.btn-xs(data-title='View', data-toggle='modal', data-target='#view', ng-click='minimize()')
-                i.fa.fa-minus-square
-              button.btn.btn-primary.btn-xs(data-title='View', data-toggle='modal', data-target='#view', ng-click='viewCollection(obj.name)')
-                i.fa.fa-pencil-square
-              button.btn.btn-danger.btn-xs(data-title='Drop', data-toggle='modal', data-target='#drop', ng-click='dropCollection(obj.name)')
-                i.fa.fa-trash
+            div.collectionBar(style='float:right;')
+              p(style='float:left;', data-placement='top', data-toggle='tooltip', title='Minimize')
+                button.btn.btn-primary.btn-xs(data-title='Minimize', data-toggle='modal', data-target='#minimize', ng-click='minimize()')
+                  i.fa.fa-minus-square
+              p(style='float:left;', data-placement='top', data-toggle='tooltip', title='View Collection')
+                button.btn.btn-primary.btn-xs(data-title='View Collection', data-toggle='modal', data-target='#view', ng-click='viewCollection(obj.name)')
+                  i.fa.fa-pencil-square
+              p(style='float:left;', data-placement='top', data-toggle='tooltip', title='Drop Collection')
+                button.btn.btn-danger.btn-xs(data-title='Drop Collection', data-toggle='modal', data-target='#drop', ng-click='dropCollection(obj.name)')
+                  i.fa.fa-trash
             // <button class="btn btn-danger btn-xs" data-title="Drop" data-toggle="modal" data-target="#drop" ng-click="testIndex($index+1)"><span class="glyphicon glyphicon-trash"></span></button>
+  .data-row.row(ng-show='menu.data')  
     h4(ng-model='DB_COLLECTION')
       center {{DB_COLLECTION}}
     .col-sm-12
       .col-sm-12
-        ol(ng-repeat='item in items')
-          li
-            img(src='/images/tinyIcon.png', alt='icon')
-            button.btn.btn-danger.btn-xs(data-title='Drop', data-toggle='modal', data-target='#drop', style='float:right;', ng-click='dropData(item,DB_COLLECTION)')
-              i.fa.fa-trash
-          li
-            ul(style='list-style-type:circle' ng-repeat='(key, value) in item')
-              li
-                b {{key}}
-                p {{value}}
+        form.ng-pristine.ng-valid
+          .form-group
+            .input-group
+              .input-group-addon
+                i.fa.fa-search
+              input.form-control.ng-pristine.ng-untouched.ng-valid(placeholder='Search Data', ng-model='searchFish', type='text')
+        table.table-striped.ajk-table
+          thead
+            tr
+              th Data
+              th Value
+          tr(ng-repeat='item in items')
+            td
+              img(src='/images/tinyIcon.png', alt='icon')
+              button.btn.btn-danger.btn-xs(data-title='Drop', data-toggle='modal', data-target='#drop', style='float:right;', ng-click='dropData(item,DB_COLLECTION)')
+                i.fa.fa-trash
+            td
+              ul(style='list-style-type:circle' ng-repeat='(key, value) in item')
+                li
+                  b {{key}}
+                  p {{value}}
       .col-sm-12(ng-hide='!items.length')
-        .col-sm-6
-          | Object Name, Json Format
-          input.form-control.ajk-input.has-error(placeholder="example{ key:'value'}", type='text' ng-model="newData")
+        form.ng-pristine.ng-valid
+          .form-group
+            .input-group
+              .input-group-addon
+                i.fa.fa-plus
+              input.form-control.ng-pristine.ng-untouched.ng-valid.has-error(data-title='InsertData', data-toggle='modal', data-target='#insertJson', placeholder="example{ key:'value'}", type='text' ng-model="newData")
           select(ng-options='obj as obj.name for obj in objs', ng-model='collection')
             option(style='display:none', value='') select a collection
-          button.btn.btn-primary.btn-xs(data-title='add_object', data-toggle='modal', data-target='#add', ng-click='insertData(newData,collection.name)')
+          button.btn.btn-primary.btn-xs(data-title='Add Object', data-toggle='modal', data-target='#add', ng-click='insertData(newData,collection.name)')
             i.fa.fa-plus-square
           {{newData +' ' +DB_COLLECTION}}
           // <input ng-model="numberOfKeys" type="number" name="quantity" min="1" max="20"/>
