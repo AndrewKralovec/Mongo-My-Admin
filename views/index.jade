@@ -10,8 +10,9 @@ block content
         |  My Admin Page
       .alert.alert-info(ng-show='!menu.database')
         a.btn.btn-xs.btn-primary.pull-right(ng-click='toggleMenu()') Home
+        a.btn.btn-xs.btn-primary.pull-right(ng-show='!menu.collection', ng-click='toggleCollection()') Collections
         strong Info:
-        |  Return to database table
+        |  Return to desired page
   .row(ng-show='menu.database')
     table.table.table-striped.ajk-table
       thead
@@ -69,6 +70,11 @@ block content
                 button.btn.btn-danger.btn-xs(data-title='Drop Collection', data-toggle='modal', data-target='#drop', ng-click='dropCollection(obj.name)')
                   i.fa.fa-trash
             // <button class="btn btn-danger btn-xs" data-title="Drop" data-toggle="modal" data-target="#drop" ng-click="testIndex($index+1)"><span class="glyphicon glyphicon-trash"></span></button>
+    .col-sm-12
+      h5 New Collection
+      input.form-control.ajk-input.has-error(ng-model='COLLECTION_INPUT')
+      button.btn.btn-primary.btn-xs(ng-disabled="DB_NAME == 'Select a Database'", data-title='add_collection', data-toggle='modal', data-target='#add', ng-click='addCollection(COLLECTION_INPUT)')
+        i.fa.fa-plus-square
   .data-row.row(ng-show='menu.data')  
     h4(ng-model='DB_COLLECTION')
       center {{DB_COLLECTION}}
@@ -87,9 +93,14 @@ block content
               th Value
           tr(ng-repeat='item in items')
             td
-              img(src='/images/tinyIcon.png', alt='icon')
-              button.btn.btn-danger.btn-xs(data-title='Drop', data-toggle='modal', data-target='#drop', style='float:right;', ng-click='dropData(item,DB_COLLECTION)')
-                i.fa.fa-trash
+              .alert.alert-success
+                i.fa.fa-leaf
+                strong  Success!
+                | &nbsp;You object loaded
+              button.btn.btn-labeled.btn-danger(type='button', data-title='Drop', data-toggle='modal', data-target='#drop', ng-click='dropData(item,DB_COLLECTION)')
+                span.btn-label
+                  i.fa.fa-trash
+                | Drop
             td
               ul(style='list-style-type:circle' ng-repeat='(key, value) in item')
                 li
@@ -119,8 +130,3 @@ block content
           </div>
     .col-sm-12(ng-hide='objs.length') Empty
     // Show empty if objects has no elements
-    .col-sm-12
-      h5 New Collection
-      input.form-control.ajk-input.has-error(ng-model='COLLECTION_INPUT')
-      button.btn.btn-primary.btn-xs(ng-disabled="DB_NAME == 'Select a Database'", data-title='add_collection', data-toggle='modal', data-target='#add', ng-click='addCollection(COLLECTION_INPUT)')
-        i.fa.fa-plus-square

@@ -50,6 +50,11 @@ app.controller('customersCtrl', function ($scope, $http) {
         $scope.menu.database = true ; 
         refresh(); 
     }
+    $scope.toggleCollection = function() {
+        $scope.menu.data = false ; 
+        $scope.menu.collection = true ; 
+        collectionRefresh(); 
+    }
 
     $scope.dropDB = function (DB) {
         $http.post('/dropDB', JSON.stringify({ 'DB': DB })).success(function (response) {
@@ -58,10 +63,15 @@ app.controller('customersCtrl', function ($scope, $http) {
     };
 
     $scope.addDB = function (DB) {
-        $http.post('/addDB', JSON.stringify({ 'DB': DB })).success(function (response) {
-            console.log("DB Added: ");
-            refresh();
-        });
+        try{
+            var objson = JSON.stringify({ 'DB': DB }) ; 
+            $http.post('/addDB', objson).success(function (response) {
+                console.log("DB Added: ");
+                refresh();
+             });
+        }catch(ex){
+            alert("Not a valid input type");
+        }
     };
 
     $scope.updateDB = function (DB) {
@@ -81,10 +91,14 @@ app.controller('customersCtrl', function ($scope, $http) {
     };
 
     $scope.addCollection = function (collection) {
+        try{
         var objson = { 'DB': $scope.DB_NAME, 'collection': collection };
         $http.post('/addcollection', objson).success(function (response) {
             collectionRefresh();
         });
+        }catch(ex){
+            alert("Not a valid input type");
+        }
     };
 
     $scope.testIndex = function (collection) {
