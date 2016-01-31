@@ -37,7 +37,8 @@ app.controller('customersCtrl', function ($scope, $http) {
 
     // Call refresh to init cantacklist 
     refresh();
-    
+    $scope.runTest = function(){
+        alert(10);}; 
     $scope.editDB = function (DB) {
         $scope.menu.collection = true ; 
         $scope.menu.database = false ; 

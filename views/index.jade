@@ -110,7 +110,7 @@ block content
         form.ng-pristine.ng-valid
           .form-group
             .input-group
-              .input-group-addon
+              .input-group-addon(ng-click='runTest()')
                 i.fa.fa-plus
               input.form-control.ng-pristine.ng-untouched.ng-valid.has-error(data-title='InsertData', data-toggle='modal', data-target='#insertJson', placeholder="example{ key:'value'}", type='text' ng-model="newData")
           select(ng-options='obj as obj.name for obj in objs', ng-model='collection')
