@@ -1,5 +1,4 @@
 extends layout
-// Gross this looks like python
 block content
  .container(ng-app='myApp', ng-controller='customersCtrl' ng-init="menu")
   .row
@@ -60,6 +59,7 @@ block content
           li.list-group-item
             | {{obj.name}}
             div.collectionBar(style='float:right;')
+              // Setting up each to float left because css was getting glitchy 
               p(style='float:left;', data-placement='top', data-toggle='tooltip', title='Minimize')
                 button.btn.btn-primary.btn-xs(data-title='Minimize', data-toggle='modal', data-target='#minimize', ng-click='minimize()')
                   i.fa.fa-minus-square
@@ -72,11 +72,14 @@ block content
             // <button class="btn btn-danger btn-xs" data-title="Drop" data-toggle="modal" data-target="#drop" ng-click="testIndex($index+1)"><span class="glyphicon glyphicon-trash"></span></button>
     .col-sm-12
       h5 New Collection
-      input.form-control.ajk-input.has-error(ng-model='COLLECTION_INPUT')
-      button.btn.btn-primary.btn-xs(ng-disabled="DB_NAME == 'Select a Database'", data-title='add_collection', data-toggle='modal', data-target='#add', ng-click='addCollection(COLLECTION_INPUT)')
-        i.fa.fa-plus-square
+      form.ng-pristine.ng-valid
+        .form-group
+          .input-group
+            .input-group-addon(ng-disabled="DB_NAME == 'Select a Database'", data-title='add_collection', data-toggle='modal', data-target='#add', ng-click='addCollection(COLLECTION_INPUT)')
+              i.fa.fa-plus
+            input.form-control.ng-pristine.ng-untouched.ng-valid.has-error(ng-model='COLLECTION_INPUT')
   .data-row.row(ng-show='menu.data')  
-    h4(ng-model='DB_COLLECTION')
+    h2(ng-model='DB_COLLECTION')
       center {{DB_COLLECTION}}
     .col-sm-12
       .col-sm-12
@@ -85,13 +88,20 @@ block content
             .input-group
               .input-group-addon
                 i.fa.fa-search
-              input.form-control.ng-pristine.ng-untouched.ng-valid(placeholder='Search Data', ng-model='searchFish', type='text')
+              input.form-control.ng-pristine.ng-untouched.ng-valid(placeholder='Search Data', ng-model='searchItems', type='text')
+      .col-sm-12
+        form.ng-pristine.ng-valid
+          .form-group
+            .input-group
+              .input-group-addon(data-title='Add Object', data-toggle='modal', data-target='#add', ng-click='insertData(newData,DB_COLLECTION)')
+                i.fa.fa-plus
+              input.form-control.ng-pristine.ng-untouched.ng-valid.has-error(data-title='InsertData', data-toggle='modal', data-target='#insertJson', placeholder="example{ key:'value'}", type='text' ng-model="newData")
         table.table-striped.ajk-table
           thead
             tr
               th Data
               th Value
-          tr(ng-repeat='item in items')
+          tr(ng-repeat='item in items | filter:searchItems')
             td
               .alert.alert-success
                 i.fa.fa-leaf
@@ -105,28 +115,9 @@ block content
               ul(style='list-style-type:circle' ng-repeat='(key, value) in item')
                 li
                   b {{key}}
-                  p {{value}}
-      .col-sm-12(ng-hide='!items.length')
-        form.ng-pristine.ng-valid
-          .form-group
-            .input-group
-              .input-group-addon(ng-click='runTest()')
-                i.fa.fa-plus
-              input.form-control.ng-pristine.ng-untouched.ng-valid.has-error(data-title='InsertData', data-toggle='modal', data-target='#insertJson', placeholder="example{ key:'value'}", type='text' ng-model="newData")
-          select(ng-options='obj as obj.name for obj in objs', ng-model='collection')
-            option(style='display:none', value='') select a collection
-          button.btn.btn-primary.btn-xs(data-title='Add Object', data-toggle='modal', data-target='#add', ng-click='insertData(newData,collection.name)')
-            i.fa.fa-plus-square
+                  p(ng-show='!isArray(value)') {{value}}
+                  ul(ng-if='isArray(value)', ng-repeat='elm in value')
+                    li {{elm}}
           {{newData +' ' +DB_COLLECTION}}
-          // <input ng-model="numberOfKeys" type="number" name="quantity" min="1" max="20"/>
-        //
-          <div class="col-sm-6">
-          {{numberOfKeys}}
-          <ul ng-repeat="">
-          <li>
-          Key: <input class="form-control ajk-input has-error" ng-model=""/> Value: <input class="form-control ajk-input has-error" ng-model=""/>
-          </li>
-          </ul>
-          </div>
     .col-sm-12(ng-hide='objs.length') Empty
     // Show empty if objects has no elements
