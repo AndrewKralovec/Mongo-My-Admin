@@ -61,14 +61,20 @@ block content
             div.collectionBar(style='float:right;')
               // Setting up each to float left because css was getting glitchy 
               p(style='float:left;', data-placement='top', data-toggle='tooltip', title='Minimize')
-                button.btn.btn-primary.btn-xs(data-title='Minimize', data-toggle='modal', data-target='#minimize', ng-click='minimize()')
-                  i.fa.fa-minus-square
+               button.btn.btn-success.btn-xs(data-title='Minimize', data-toggle='modal', data-target='#minimize', ng-click='minimize()')
+                  span.btn-label
+                    i.fa.fa-minus-square
+                  | Minimize
               p(style='float:left;', data-placement='top', data-toggle='tooltip', title='View Collection')
-                button.btn.btn-primary.btn-xs(data-title='View Collection', data-toggle='modal', data-target='#view', ng-click='viewCollection(obj.name)')
-                  i.fa.fa-pencil-square
+                button.btn.btn-success.btn-xs(data-title='View Collection', data-toggle='modal', data-target='#view', ng-click='viewCollection(obj.name)')
+                  span.btn-label
+                    i.fa.fa-pencil-square
+                  | Edit
               p(style='float:left;', data-placement='top', data-toggle='tooltip', title='Drop Collection')
                 button.btn.btn-danger.btn-xs(data-title='Drop Collection', data-toggle='modal', data-target='#drop', ng-click='dropCollection(obj.name)')
-                  i.fa.fa-trash
+                  span.btn-label
+                    i.fa.fa-trash
+                  | Drop
             // <button class="btn btn-danger btn-xs" data-title="Drop" data-toggle="modal" data-target="#drop" ng-click="testIndex($index+1)"><span class="glyphicon glyphicon-trash"></span></button>
     .col-sm-12
       h5 New Collection
@@ -118,6 +124,5 @@ block content
                   p(ng-show='!isArray(value)') {{value}}
                   ul(ng-if='isArray(value)', ng-repeat='elm in value')
                     li {{elm}}
-          {{newData +' ' +DB_COLLECTION}}
     .col-sm-12(ng-hide='objs.length') Empty
     // Show empty if objects has no elements
