@@ -66,21 +66,12 @@ router.post('/viewcollection', function (req, res, next) {
     var db = new Db(databaseName, new Server('localhost', 27017));
     db.open(function (err, db) {
         console.log(databaseName + ": opened");
-        var cursor = db.collection(collection).find();
-        var array = [];
-        cursor.each(function (err, doc) {
-            var isempty = false;
-            assert.equal(err, null);
-            if (!isempty && doc != null) {
-                console.log(doc);
-                array.push(doc);
-            }
-            else {
-                isempty = true;
-            }
-            //fix race error
-            if (isempty) {
-                res.json(array);
+        var cursor = db.collection(collection).find().toArray(function (err, documents) {
+            if(err)
+                throw err ; 
+            var result = documents ; 
+            if (!res.headersSent) {
+                res.json(documents);
                 db.close();
             }
         });
