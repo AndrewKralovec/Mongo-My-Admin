@@ -69,11 +69,8 @@ router.post('/viewcollection', function (req, res, next) {
         var cursor = db.collection(collection).find().toArray(function (err, documents) {
             if(err)
                 throw err ; 
-            var result = documents ; 
-            if (!res.headersSent) {
-                res.json(documents);
-                db.close();
-            }
+             res.json(documents);
+             db.close();
         });
     });
 

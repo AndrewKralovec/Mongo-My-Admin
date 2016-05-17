@@ -60,11 +60,6 @@ block content
             | {{obj.name}}
             div.collectionBar(style='float:right;')
               // Setting up each to float left because css was getting glitchy 
-              p(style='float:left;', data-placement='top', data-toggle='tooltip', title='Minimize')
-               button.btn.btn-success.btn-xs(data-title='Minimize', data-toggle='modal', data-target='#minimize', ng-click='minimize()')
-                  span.btn-label
-                    i.fa.fa-minus-square
-                  | Minimize
               p(style='float:left;', data-placement='top', data-toggle='tooltip', title='View Collection')
                 button.btn.btn-success.btn-xs(data-title='View Collection', data-toggle='modal', data-target='#view', ng-click='viewCollection(obj.name)')
                   span.btn-label
@@ -112,7 +107,7 @@ block content
               .alert.alert-success
                 i.fa.fa-leaf
                 strong  Success!
-                | &nbsp;You object loaded
+                | &nbsp;Your object loaded
               button.btn.btn-labeled.btn-danger(type='button', data-title='Drop', data-toggle='modal', data-target='#drop', ng-click='dropData(item,DB_COLLECTION)')
                 span.btn-label
                   i.fa.fa-trash
